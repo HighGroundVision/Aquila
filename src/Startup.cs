@@ -1,5 +1,7 @@
 ﻿using HGV.Basilius.Client;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Caching;
@@ -19,11 +21,10 @@ namespace HGV.Aquila
         {
             // Singleton
             builder.Services.AddHttpClient();
-            builder.Services.AddSingleton<IMetaClient>(new MetaClient());
+            builder.Services.AddSingleton<IMetaClient, MetaClient>();
             builder.Services.AddMemoryCache();
-            builder.Services.AddSingleton<Polly.Caching.IAsyncCacheProvider, Polly.Caching.Memory.MemoryCacheProvider>();
-
-            builder.Services.AddSingleton<Polly.Registry.IReadOnlyPolicyRegistry<string>, Polly.Registry.PolicyRegistry>((serviceProvider) =>
+            builder.Services.AddSingleton<IAsyncCacheProvider, Polly.Caching.Memory.MemoryCacheProvider>();
+            builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, Polly.Registry.PolicyRegistry>((serviceProvider) =>
             {
                 var registry = new PolicyRegistry();
                 var provider = serviceProvider.GetRequiredService<IAsyncCacheProvider>().AsyncFor<string>();

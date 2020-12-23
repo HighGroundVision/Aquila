@@ -1,15 +1,10 @@
 ﻿using HGV.Basilius.Client;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Caching;
 using Polly.Registry;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 
 [assembly: FunctionsStartup(typeof(HGV.Aquila.Startup))]
 

@@ -17,15 +17,6 @@ namespace HGV.Aquila
             // Singleton
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<IMetaClient, MetaClient>();
-            builder.Services.AddMemoryCache();
-            builder.Services.AddSingleton<IAsyncCacheProvider, Polly.Caching.Memory.MemoryCacheProvider>();
-            builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, Polly.Registry.PolicyRegistry>((serviceProvider) =>
-            {
-                var registry = new PolicyRegistry();
-                var provider = serviceProvider.GetRequiredService<IAsyncCacheProvider>().AsyncFor<string>();
-                registry.Add("GetHeroes", Policy.CacheAsync<string>(provider,TimeSpan.FromMinutes(5)));
-                return registry;
-            });
         }
     }
 }

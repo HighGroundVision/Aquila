@@ -23,11 +23,10 @@ namespace HGV.Aquila.Functions
         private readonly IAsyncPolicy<string> cachePolicy;
         private readonly string statsUrl;
 
-        public HeroesFunction(HttpClient httpClient, IMetaClient metaClient, IReadOnlyPolicyRegistry<string> policyRegistry)
+        public HeroesFunction(HttpClient httpClient, IMetaClient metaClient)
         {
             this.httpClient = httpClient;
             this.metaClient = metaClient;
-            this.cachePolicy = policyRegistry.Get<IAsyncPolicy<string>>("GetHeroes");
             this.statsUrl = Environment.GetEnvironmentVariable("StatsUrl");
         }
 
@@ -36,8 +35,8 @@ namespace HGV.Aquila.Functions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "heroes")] HttpRequest req,
             ILogger log)
         { 
-            var policy = await this.cachePolicy.ExecuteAndCaptureAsync(() => this.httpClient.GetStringAsync(statsUrl));
-            var result = JsonConvert.DeserializeObject<Root>(policy.Result);
+            var response = await this.httpClient.GetStringAsync(statsUrl);
+            var result = JsonConvert.DeserializeObject<Root>(response);
             var major = result.Data.Patches.Majors.Last();
             var patch = result.Data.Patches.Details[major].FirstOrDefault();
             var stats = result.Data.Heroes.Select(_ => new { Id = _.Key, Data = _.Value[patch] }).ToList();

@@ -8,7 +8,7 @@ namespace HGV.Aquila.Models
     public class Hero
     {
         [JsonProperty("id")]
-        public int Id { get; set;} 
+        public int Id { get; set;} // Partition key
 
         [JsonProperty("key")]
         public string Key { get; set; }

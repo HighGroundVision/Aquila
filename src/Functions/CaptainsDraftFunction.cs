@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HGV.Basilius.Client;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,8 +17,11 @@ namespace HGV.Aquila
 {
     public class CaptainsDraftFunction
     {
-        public CaptainsDraftFunction()
+        private readonly IMetaClient metaClient;
+
+        public CaptainsDraftFunction(IMetaClient metaClient)
         {
+            this.metaClient = metaClient;
         }
 
         [FunctionName("CaptainsDraftNegotiate")]
@@ -100,9 +105,22 @@ namespace HGV.Aquila
 
             var sequence = document["sequence"] as JArray;
             var item = sequence[phaseIndex];
+            var phase = item["phase"].Value<int>();
+            var hero = token["hero"].Value<int>();
 
-            item["selection"] = token["hero"].Value<int>();
+            item["selection"] = hero;
 
+            if(phase == 1)
+            {
+                var replacements = metaClient.GetHeroes().Where(_ => _.AbilityReplaceRequired == true).Select(_ => _.Id).ToList();
+                if(replacements.Contains(hero))
+                {
+                    var pool = document["pool"].ToObject<List<int>>();
+                    pool.RemoveAll(_ => replacements.Contains(_));
+                    document["pool"] = new JArray(pool);
+                }
+            }
+            
             await collector.AddAsync(document);
 
             var msg = new SignalRMessage

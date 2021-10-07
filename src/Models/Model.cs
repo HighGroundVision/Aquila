@@ -28,6 +28,9 @@ namespace HGV.Aquila.Models
         [JsonProperty("image_profile")]
         public string ImageProfile { get; set; }
 
+        [JsonProperty("image_portrait")]
+        public string ImagePortrait { get; set; }
+
         [JsonProperty("ability_replace_required")]
         public bool AbilityReplaceRequired { get; set; }
 
@@ -66,6 +69,11 @@ namespace HGV.Aquila.Models
 
         [JsonProperty("roles")]
         public List<string> Roles { get; set; }
+
+        [JsonProperty("complexity")]
+        public int Complexity { get; set; }
+
+        
     }
 
     public class Patches

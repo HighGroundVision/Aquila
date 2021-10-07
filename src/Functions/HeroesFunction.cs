@@ -52,6 +52,7 @@ namespace HGV.Aquila.Functions
                     ImageBanner = lhs.ImageBanner,
                     ImageIcon = lhs.ImageIcon,
                     ImageProfile = lhs.ImageProfile,
+                    ImagePortrait = lhs.ImagePortrait,
                     AbilityReplaceRequired = lhs.AbilityReplaceRequired,
                     StrengthGain = lhs.AttributeStrengthGain,
                     MaxStrength = lhs.AttributeBaseStrength + (lhs.AttributeStrengthGain * 30),
@@ -64,6 +65,7 @@ namespace HGV.Aquila.Functions
                     Damage = (lhs.AttackDamageMin + lhs.AttackDamageMax) / 2,
                     Roles = lhs.Roles,
                     WinRate = rhs.Data.WinRate,
+                    Complexity = lhs.Complexity,
                     Picked = false,
                 })
                 .OrderBy(_ => _.Name)

@@ -81,7 +81,6 @@ export const AllPickGame = {
   validateSetupData: (data, players) => {
     if (players != 11) return 'Invaild Number of Players'
     if (!data) return 'Invaild Lobby Configuration'
-    if (!data.name) return 'A Lobby Name is required'
     if (!data.banTime) return 'Invaild Ban Time'
     if (data.banTime < 5 || data.banTime > 30) return 'Invaild Ban Time'
     if (!data.pickTime) return 'Invaild Pick Time'

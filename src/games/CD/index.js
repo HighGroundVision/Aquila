@@ -51,7 +51,6 @@ export const CaptainsDuelGame = {
   validateSetupData: (data, players) => {
     if (players != 3) return 'Invaild Number of Players'
     if (!data) return 'Invaild Lobby Configuration'
-    if (!data.name) return 'A Lobby Name is Required'
     if (data.sequence.length < 1) return 'A Sequence is Required'
     if (data.sequence.filter((i) => i.stage == 'pick' && i.team == 1).length != 5) return 'Radiant Must Have 5 Pick Stages'
     if (data.sequence.filter((i) => i.stage == 'pick' && i.team == 2).length != 5) return 'Dire Must Have 5 Pick Stages'

@@ -6,4 +6,4 @@ HGV - Lotus Fulfillment
 
 **TODO**
 
-- Use Azure storage for server db
+- Use Azure storage for server db (https://github.com/c-w/bgio-azure-storage)

@@ -15,7 +15,7 @@ const server = Server({
   }),
 
   origins: [
-    'lotus.highgroundvision.com',
+    'https://lotus.highgroundvision.com',
     Origins.LOCALHOST,
     // Origins.LOCALHOST_IN_DEVELOPMENT, // Allow localhost to connect, except when NODE_ENV is 'production'.
   ],

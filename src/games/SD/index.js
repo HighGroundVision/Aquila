@@ -34,7 +34,6 @@ export const SingleDraftGame = {
 
   setup: (_, data) => {
     return {
-      // ready: false,
       visibility: data.visibility,
       extra: data.extra,
       collection: data.collection,
@@ -56,26 +55,24 @@ export const SingleDraftGame = {
       next: 'pick',
     },
     pick: {
-      moves: { PickHero, QuickPick },
+      moves: { PickHero, QuickPick, Readyup },
       endIf: (G) => {
         return G.collection.slice(0, 10).every((i) => i.selection)
       },
       turn: {
         order: TurnOrder.CONTINUE,
-        // activePlayers: ActivePlayers.OTHERS_ONCE,
         activePlayers: ActivePlayers.ALL_ONCE,
       },
       next: 'extra',
     },
     extra: {
-      // moves: { PickExtra, VoteExtra },
       onBegin: (G, ctx) => {
         if (G.extra == 1) {
           ctx.events.endGame()
         }
       },
       onEnd: (_, ctx) => ctx.events.endGame(),
-      endIf: (G) => G.collection.every((i) => i.selection),
+      endIf: (G) => G.collection.slice(10, 11).every((i) => i.selection),
       turn: {
         order: TurnOrder.CONTINUE,
         activePlayers: {
